@@ -1,0 +1,12 @@
+/.vscode/
+/data/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+*.log
+*.sqlite3
