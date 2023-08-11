@@ -1,10 +1,15 @@
 from pymongo import MongoClient
+from api.models import Pessoa
+from bson import ObjectId
+from api.utils import validar_object_id
+from bson.errors import InvalidId
+from rest_framework.exceptions import ValidationError
 
 
 class EnderecoRepository:
     def __init__(self):
         client = MongoClient('mongo', 27017)
-        self.collection = client['cep_database']['enderecos']
+        self.collection = client['tex_db']['enderecos']
         self.collection.create_index('CEP', unique=True)
 
     def salvar(self, endereco_data):
@@ -37,3 +42,36 @@ class EnderecoService:
 
     def salvar_endereco(self, endereco):
         self.endereco_repository.salvar(endereco)
+
+
+class PessoaRepository:
+    def __init__(self):
+        client = MongoClient('mongo', 27017)
+        self.collection = client['tex_db']['pessoas']
+
+    def salvar(self, pessoa):
+        document = {
+            'nome': pessoa.nome,
+            'idade': pessoa.idade
+        }
+        result = self.collection.insert_one(document)
+        pessoa._id = str(result.inserted_id)
+
+    def atualizar(self, pessoa_id, pessoa_data):
+        result = self.collection.update_one(
+            {'_id': ObjectId(pessoa_id)},
+            {'$set': pessoa_data}
+        )
+        return result.modified_count > 0
+
+    def excluir(self, pessoa_id):
+        self.collection.delete_one({'_id': ObjectId(pessoa_id)})
+
+    def buscar_todos(self):
+        return [Pessoa(**pessoa) for pessoa in self.collection.find({})]
+
+    def buscar_por_id(self, pessoa_id):
+        pessoa = self.collection.find_one({'_id': ObjectId(pessoa_id)})
+        if pessoa:
+            return Pessoa(**pessoa)
+        return None

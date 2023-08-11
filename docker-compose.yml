@@ -26,9 +26,3 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
-
-  test:
-    build: .
-    command: ["python", "manage.py", "test"]
-    volumes:
-      - .:/app
