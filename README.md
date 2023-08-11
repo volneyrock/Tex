@@ -27,7 +27,9 @@ Também há um endpoint para COnsulta de CEP, que retorna os dados de endereço 
 
 3. **Acesse a Aplicação**:
 
-   A API estará disponível no endereço `http://localhost:8000/api/`.
+   A API estará disponível no endereço `http://localhost:8000/api`.
+
+   Você pode usar o Postman para fazer as requisições ou acessar direto pela interface do Django Rest Framework, que estará disponível no endereço `http://localhost:8000/api/pessoa` por exemplo.
 
 ## Endpoints da API
 
@@ -56,3 +58,7 @@ Também há um endpoint para COnsulta de CEP, que retorna os dados de endereço 
 - **Ler os Dados de uma Pessoa Específica**:
     - **URL**: `/api/pessoa/<id>/`
     - **Método**: `GET`
+
+## Verificar dados no MongoDB
+
+Você pode verificar os dados salvos no MongoDB usando o Mongo compass conectando no endereço `mongodb://localhost:27017` e acessando o banco `tex_db` e a coleção `pessoas` ou `endereco` .
